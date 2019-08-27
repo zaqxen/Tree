@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <title>Tree</title>
+	<style>
+	*	{
+		font-size:1em;
+	}
+		/* set up the list and container so it doesn't interfere with our tree drawing. */
+		.clt, .clt ul, .clt li {
+			 position: relative;
+		}
+
+		.clt ul {
+			list-style: none;
+			padding-left: 32px;
+		}
+
+		/* make sure they are empty and move them to the left of the list elements. */
+		.clt li::before, .clt li::after {
+			content: "";
+			position: absolute;
+			left: -12px;
+		}
+
+		/* The ::before pseudo-element is used to draw the horizontal lines. */
+		.clt li::before {
+			border-top: 1px solid #000;
+			top: 22px; /* increase line distance */
+			width: 8px;
+			height: 0;
+		}
+
+		.clt li > span::before {
+			content:"●";
+			top:-3px;
+			left:-5px;
+			position:relative;
+		}
+
+		/* the vertical lines use the ::after pseudo-element. */
+		.clt li::after {
+			border-left: 1px solid #000;
+			height: 100%;
+			width: 0px;
+			top: 2px;
+		}
+
+		/* the last item on every level has just a very short line leading to it, and nothing further. */
+		.clt ul > li:last-child::after {
+			height: 20px; /* adjust the vertical line length */
+		}
+
+		.clt span > span{
+			margin-top:10px;
+			display:inline-block;
+			border:1px solid black;
+			padding: 0 5px;
+			border-radius:5px;
+			background-color:rgba(255,0,0,0.5);
+		}
+
+		.clt li > span.caret::before{
+			content:"⮟";
+			color: black;
+		}
+
+		.clt li > span.expand::before{
+			content:"⮞";
+			color: blue;
+			-ms-transform: rotate(-90deg); /* IE 9 */
+			-webkit-transform: rotate(-90deg); /* Safari */'
+			transform: rotate(-90deg);
+		}
+
+		.qq{
+			cursor:pointer;
+		}
+
+		.clt * {
+			-webkit-touch-callout: none; /* iOS Safari */
+			-webkit-user-select: none; /* Safari */
+			-khtml-user-select: none; /* Konqueror HTML */
+			-moz-user-select: none; /* Firefox */
+			-ms-user-select: none; /* Internet Explorer/Edge */
+			user-select: none; /* Non-prefixed version, currently supported by Chrome and Opera */
+		}
+	</style>
+  </head>
+  <body>
+
+	<div class="clt">
+	  <ul>
+		<li>
+		  <span class="caret qq"><span>First Querstion</span></span>
+		  <ul>
+			<li>
+			  <span class="caret aa"><span>Here is the Answer</span></span>
+			  <ul>
+				<li>
+					<span class="caret qq"><span>MCQ Question 1</span></span>
+					<ul>
+						<li><span class="aa"><span>Answer 1</span></span></li>
+						<li>
+							<span class="caret aa"><span>Answer 2</span></span>
+							<ul>
+								<li>
+									<span class="caret qq"><span>Second Text Question</span></span>
+									<ul>
+										<li><span class="aa"><span>sdfsdf</span></span></li>
+									</ul>
+								</li>
+							</ul>
+						</li>
+						<li><span class="aa"><span>Answer 3</span></span></li>
+					</ul>
+				</li>
+			  </ul>
+			</li>
+			<li>
+			  <span class="caret aa"><span>Another Answer</span></span>
+			  <ul>
+				<li>
+					<span class="caret qq"><span>Question Test3</span></span>
+					<ul>
+						<li><span class="aa"><span>Answer</span></span></li>
+					</ul>
+				</li>
+			  </ul>
+			</li>
+		  </ul>
+		</li>
+	  </ul>
+	</div>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+	<script>
+		$(".clt").find('.caret').each(function(){
+			$(this).on("click",function(){
+				$(this).parent().children('ul').toggle();
+				this.classList.toggle("expand");
+			});
+		});
+
+		$(document).ready(function(){
+			$('.qq').attr('draggable', 'true');
+			$('.qq').attr('ondragstart', 'drag(event)');
+
+			$('.aa').attr('ondrop', 'drop(event)');
+			$('.aa').attr('ondragover', 'allowDrop(event)');
+		});
+
+		function allowDrop(ev) {
+		  ev.preventDefault();
+		}
+
+		function drag(ev) {
+		  ev.dataTransfer.setData("text", ev.target.id);
+		}
+
+		function drop(ev) {
+		  ev.preventDefault();
+		  var data = ev.dataTransfer.getData("text");
+		  alert(data);
+		}
+	</script>
+  </body>
+</html>
+
+
